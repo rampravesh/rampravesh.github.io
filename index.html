@@ -11,6 +11,29 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
+    <script>
+      // define the callAPI function that takes a first name and last name as parameters
+      var callAPI = (firstName,lastName)=>{
+          // instantiate a headers object
+          var myHeaders = new Headers();
+          // add content type header to object
+          myHeaders.append("Content-Type", "application/json");
+          // using built in JSON utility package turn object to string and store in a variable
+          var raw = JSON.stringify({"firstName":firstName,"lastName":lastName});
+          // create a JSON object with parameters for API call and store in a variable
+          var requestOptions = {
+              method: 'POST',
+              headers: myHeaders,
+              body: raw,
+              redirect: 'follow'
+          };
+          // make API call with parameters and use promises to get response
+          fetch("https://hj1abrj5b1.execute-api.us-east-1.amazonaws.com/Dev/", requestOptions)
+          .then(response => response.text())
+          .then(result => alert(JSON.parse(result).body))
+          .catch(error => console.log('error', error));
+      }
+  </script>
 </head>
 
 <body class="is-preload">
@@ -242,7 +265,7 @@
                 </div>
                 <div class="col-12">
                   <ul class="actions">
-                    <li><input type="submit" value="Send Message" /></li>
+                    <li><input type="submit" value="Send Message" onclick="callAPI(document.getElementById('email').value,document.getElementById('message').value)"/></li>
                     <li>
                       <input type="reset" value="Clear Form" class="alt" />
                     </li>
